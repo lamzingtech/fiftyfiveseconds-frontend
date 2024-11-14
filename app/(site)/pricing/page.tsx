@@ -1,7 +1,13 @@
-"use client";
+
 import Image from "next/image";
 import SectionHeader from "@/components/Common/SectionHeader";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Pricing - FiftyFiveSeconds ",
+  description: "Pricing - FiftyFiveSeconds",
+  // other metadata
+};
 const Pricing = () => {
   return (
     <>

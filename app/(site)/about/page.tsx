@@ -1,6 +1,11 @@
-"use client";
-import SectionHeader from "@/components/Common/SectionHeader";
 
+import SectionHeader from "@/components/Common/SectionHeader";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "About Us - FiftyFiveSeconds ",
+  description: "About FiftyFiveSeconds",
+  // other metadata
+};
 const AboutUs = () => {
   return (
     <>
