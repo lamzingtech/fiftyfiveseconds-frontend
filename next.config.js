@@ -26,8 +26,8 @@ const nextConfig = {
       },
     ],
   },
-  assetPrefix: './',
-  //assetPrefix: isProd ? '/lamzingtech.github.io/fiftyfiveseconds-frontend/' : '',
+  //assetPrefix: './',
+  assetPrefix: isProd ? '/fiftyfiveseconds-frontend/' : '',
   //basePath: isProd ? '/lamzingtech.github.io/fiftyfiveseconds-frontend' : '',
   output: 'export'
 
