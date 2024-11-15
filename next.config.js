@@ -1,17 +1,21 @@
 /** @type {import('next').NextConfig} */
 
-const isProd = 'production';
-// const nextConfig = {
-//   reactStrictMode: true,
-//   images: {
-//     unoptimized: true, // Disable default image optimization
-//   },
-//   assetPrefix: isProd ? '/your-repository-name/' : '',
-//   basePath: isProd ? '/your-repository-name' : '',
-//   output: 'export'
-// };
+const nextConfig = {
+  reactStrictMode: true,
+  swcMinify: true,
+  images: {
+    domains: ["localhost"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+        port: "",
+      },
+    ],
+  }
+};
 
-// export default nextConfig;
+/*
 
 const nextConfig = {
   reactStrictMode: true,
@@ -32,6 +36,8 @@ const nextConfig = {
   output: 'export'
 
 };
+
+*/
 
 
 module.exports = nextConfig;
