@@ -5,8 +5,7 @@ import { useState } from "react";
 
 const Footer = () => {
   const [formData, setFormData] = useState({
-    email: "",
-    vlink: "",
+    email: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [responseMessage, setResponseMessage] = useState({
@@ -44,10 +43,9 @@ const Footer = () => {
       } else {
         setResponseMessage(data);
       }
-      setFormData({
-        email: "",
-        vlink: "",
-      });
+     setFormData({
+        email: ''
+      })
     } catch (error) {
       console.error("Error:", error);
       setResponseMessage({
