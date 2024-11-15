@@ -139,6 +139,7 @@ const Header = () => {
                     </>
                   ) : (
                     <Link
+                    onClick={()=> setNavigationOpen(!navigationOpen)}
                       href={`${menuItem.path}`}
                       className={
                         pathUrl === menuItem.path
