@@ -5,13 +5,17 @@ import { useState } from "react";
 
 const Footer = () => {
   const [formData, setFormData] = useState({
-    email: ''
+    email: "",
+    vlink: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [responseMessage, setResponseMessage] = useState({status: 3, message: ""});
+  const [responseMessage, setResponseMessage] = useState({
+    status: 3,
+    message: "",
+  });
 
   const handleInputChange = (e) => {
-    setResponseMessage({status: 3, message: ""});
+    setResponseMessage({ status: 3, message: "" });
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -22,13 +26,13 @@ const Footer = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setResponseMessage({status: 3, message: ""});
+    setResponseMessage({ status: 3, message: "" });
 
     try {
-      const res = await fetch('/api/subscribes', {
-        method: 'POST',
+      const res = await fetch("/api/subscribes", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
@@ -37,18 +41,19 @@ const Footer = () => {
 
       if (res.ok) {
         setResponseMessage(data);
-    
       } else {
         setResponseMessage(data);
-    
       }
-     setFormData({
-        email: '',
-        vlink: '',
-      })
+      setFormData({
+        email: "",
+        vlink: "",
+      });
     } catch (error) {
-      console.error('Error:', error);
-      setResponseMessage({status: 2, message: 'There was an error sending your message.'});
+      console.error("Error:", error);
+      setResponseMessage({
+        status: 2,
+        message: "There was an error sending your message.",
+      });
     }
 
     setIsSubmitting(false);
@@ -79,22 +84,22 @@ const Footer = () => {
                 className="animate_top"
               >
                 <a href="/" className="relative">
-                <Image
-              src="/images/logo.png"
-              alt="logo"
-              width={169.03}
-              height={50}
-              className="w-full dark:hidden"
-            />
-              <Image
-              src="/images/white.png"
-              alt="logo"
-              width={169.03}
-              height={50}
-              className="hidden w-full dark:block"
-            />
-             
-                 {/* <Image
+                  <Image
+                    src="/images/logo.png"
+                    alt="logo"
+                    width={169.03}
+                    height={50}
+                    className="w-full dark:hidden"
+                  />
+                  <Image
+                    src="/images/white.png"
+                    alt="logo"
+                    width={169.03}
+                    height={50}
+                    className="hidden w-full dark:block"
+                  />
+
+                  {/* <Image
                     width={110}
                     height={80}
                     src="/images/logo.png"
@@ -110,9 +115,7 @@ const Footer = () => {
                   />  */}
                 </a>
 
-                <p className="mb-10 mt-5">
-                Your Complete Video Solution
-                </p>
+                <p className="mb-10 mt-5">Your Complete Video Solution</p>
 
                 <p className="mb-1.5 text-sectiontitle uppercase tracking-[5px]">
                   contact
@@ -157,8 +160,7 @@ const Footer = () => {
                         Home
                       </a>
                     </li>
-                   
-                   
+
                     <li>
                       <a
                         href="#"
@@ -167,7 +169,7 @@ const Footer = () => {
                         Pricing
                       </a>
                     </li>
-                   
+
                     <li>
                       <a
                         href="#"
@@ -210,8 +212,7 @@ const Footer = () => {
                         About us
                       </a>
                     </li>
-                  
-                  
+
                     <li>
                       <a
                         href="#"
@@ -257,7 +258,17 @@ const Footer = () => {
                   </p>
 
                   <form onSubmit={handleSubmit}>
-                  {responseMessage.status === 3 ? <p className="text-sm text-red-600 font-medium mb-4"></p>: responseMessage.status === 1 ?<p className="text-sm text-green-600 font-medium mb-4">{responseMessage.message}</p>:<p className="text-sm text-red-600 font-medium mb-4">{responseMessage.message}</p>}
+                    {responseMessage.status === 3 ? (
+                      <p className="mb-4 text-sm font-medium text-red-600"></p>
+                    ) : responseMessage.status === 1 ? (
+                      <p className="mb-4 text-sm font-medium text-green-600">
+                        {responseMessage.message}
+                      </p>
+                    ) : (
+                      <p className="mb-4 text-sm font-medium text-red-600">
+                        {responseMessage.message}
+                      </p>
+                    )}
                     <div className="relative">
                       <input
                         value={formData.email}
@@ -272,32 +283,47 @@ const Footer = () => {
                         aria-label="signup to newsletter"
                         className="absolute right-0 p-4"
                       >
-                        {isSubmitting ? <div role="status">
-    <svg aria-hidden="true" className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-    </svg>
-   
-</div>:<svg
-                          className="fill-[#757693] hover:fill-primary dark:fill-white"
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <g clipPath="url(#clip0_48_1487)">
-                            <path
-                              d="M3.1175 1.17318L18.5025 9.63484C18.5678 9.67081 18.6223 9.72365 18.6602 9.78786C18.6982 9.85206 18.7182 9.92527 18.7182 9.99984C18.7182 10.0744 18.6982 10.1476 18.6602 10.2118C18.6223 10.276 18.5678 10.3289 18.5025 10.3648L3.1175 18.8265C3.05406 18.8614 2.98262 18.8792 2.91023 18.8781C2.83783 18.8769 2.76698 18.857 2.70465 18.8201C2.64232 18.7833 2.59066 18.7308 2.55478 18.6679C2.51889 18.6051 2.50001 18.5339 2.5 18.4615V1.53818C2.50001 1.46577 2.51889 1.39462 2.55478 1.33174C2.59066 1.26885 2.64232 1.2164 2.70465 1.17956C2.76698 1.14272 2.83783 1.12275 2.91023 1.12163C2.98262 1.12051 3.05406 1.13828 3.1175 1.17318ZM4.16667 10.8332V16.3473L15.7083 9.99984L4.16667 3.65234V9.16651H8.33333V10.8332H4.16667Z"
-                              fill=""
-                            />
-                          </g>
-                          <defs>
-                            <clipPath id="clip0_48_1487">
-                              <rect width="20" height="20" fill="white" />
-                            </clipPath>
-                          </defs>
-                        </svg>}
+                        {isSubmitting ? (
+                          <div role="status">
+                            <svg
+                              aria-hidden="true"
+                              className="h-8 w-8 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
+                              viewBox="0 0 100 101"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor"
+                              />
+                              <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill"
+                              />
+                            </svg>
+                          </div>
+                        ) : (
+                          <svg
+                            className="fill-[#757693] hover:fill-primary dark:fill-white"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g clipPath="url(#clip0_48_1487)">
+                              <path
+                                d="M3.1175 1.17318L18.5025 9.63484C18.5678 9.67081 18.6223 9.72365 18.6602 9.78786C18.6982 9.85206 18.7182 9.92527 18.7182 9.99984C18.7182 10.0744 18.6982 10.1476 18.6602 10.2118C18.6223 10.276 18.5678 10.3289 18.5025 10.3648L3.1175 18.8265C3.05406 18.8614 2.98262 18.8792 2.91023 18.8781C2.83783 18.8769 2.76698 18.857 2.70465 18.8201C2.64232 18.7833 2.59066 18.7308 2.55478 18.6679C2.51889 18.6051 2.50001 18.5339 2.5 18.4615V1.53818C2.50001 1.46577 2.51889 1.39462 2.55478 1.33174C2.59066 1.26885 2.64232 1.2164 2.70465 1.17956C2.76698 1.14272 2.83783 1.12275 2.91023 1.12163C2.98262 1.12051 3.05406 1.13828 3.1175 1.17318ZM4.16667 10.8332V16.3473L15.7083 9.99984L4.16667 3.65234V9.16651H8.33333V10.8332H4.16667Z"
+                                fill=""
+                              />
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_48_1487">
+                                <rect width="20" height="20" fill="white" />
+                              </clipPath>
+                            </defs>
+                          </svg>
+                        )}
                       </button>
                     </div>
                   </form>
@@ -365,7 +391,8 @@ const Footer = () => {
               className="animate_top"
             >
               <p>
-                &copy; {new Date().getFullYear()} FiftyFiveSeconds. All rights reserved
+                &copy; {new Date().getFullYear()} FiftyFiveSeconds. All rights
+                reserved
               </p>
             </motion.div>
 
