@@ -16,7 +16,7 @@ export async function POST(req: any) {
       console.log("1111")
     resend.emails.send({
       from: 'onboarding@resend.dev',
-      to: 'raik.kh@gmail.com',
+      to: 'raikumar.khangembam@lamzing.com',
       subject: 'New Video link request',
       html: `You have a new message from (${email}):\n And the Video link \n${vlink}`
     });
