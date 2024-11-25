@@ -2,7 +2,7 @@ import { Resend } from 'resend';
 
 
 export async function POST(req: any) {
-  const resend = new Resend('re_SvqWaesP_HZV5uk48oMmWEabKYY5VQmk2');
+  const resend = new Resend('re_6k1pvmap_2LPZSjfc4MNp2zTJkWCJeTHp');
   const { email, vlink } = await req.json();
 
   if (!email) {
@@ -12,9 +12,9 @@ export async function POST(req: any) {
       console.log("1111")
     resend.emails.send({
       from: 'onboarding@resend.dev',
-      to: 'raikumar.khangembam@lamzing.com',
+      to: 'contact@fiftyfiveseconds.com',
       subject: 'Subscription Request',
-      html: `You have a subscription request from the email (${email})`
+      html: `You have a subscription request from the email ${email}`
     });
     return new Response(JSON.stringify({ status: 1, message: 'Email sent successfully' }), { status: 200 });
    

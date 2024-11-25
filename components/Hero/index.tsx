@@ -60,7 +60,7 @@ const Hero = () => {
 
   return (
     <>
-      <section className="overflow-hidden pb-20 pt-35 md:pt-40 xl:pb-25 xl:pt-46">
+      <section className="overflow-hidden pb-20 pt-35 sm:pt-0 md:pt-40 xl:pb-25 xl:pt-46">
         <div className="mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
           <div className="flex lg:items-center lg:gap-8 xl:gap-32.5">
             <div className=" md:w-1/2">
@@ -75,7 +75,7 @@ const Hero = () => {
                 
               </h1>
               <p>
-              Upload a 10-20 minute video and let us create impactful reels. Processing takes 1-2 hours, and your completed reels will be ready to download or sent directly to your email.
+              Upload a 10-20 minute video and let us create impactful reels. In a few hrs, your completed reels will be ready to download or sent directly to your email.
               </p>
 
               <div className="mt-10">
@@ -84,36 +84,37 @@ const Hero = () => {
     {responseMessage.status === 3 ? <p className="text-sm text-red-600 font-medium mb-4"></p>: responseMessage.status === 1 ?<p className="text-sm text-green-600 font-medium mb-4">{responseMessage.message}</p>:<p className="text-sm text-red-600 font-medium mb-4">{responseMessage.message}</p>}
 
 
-  <div className="flex flex-wrap gap-4">
-    {/* Email Input */}
-    <input
-      value={formData.email}
-      name="email"
-      onChange={handleInputChange}
-      type="email"
-      placeholder="Enter your email"
-      className="w-[35%] sm:w-[100%] md:w-[35%] rounded-full border border-stroke px-6 py-2.5 shadow-solid-2 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-black dark:shadow-none dark:focus:border-primary"
-    />
-    
-    {/* Vlink Input */}
-    <input
-      value={formData.vlink}
-      name="vlink"
-      onChange={handleInputChange}
-      type="text"
-      placeholder="Video link"
-      className="w-[40%] sm:w-[100%] md:w-[40%] rounded-full border border-stroke px-6 py-2.5 shadow-solid-2 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-black dark:shadow-none dark:focus:border-primary"
-    />
-    
-    {/* Submit Button */}
-    <button
-  aria-label="get started button"
-  className="w-[35%] sm:w-[100%] md:w-[25%] flex items-center justify-center rounded-full mt-3 bg-black px-7.5 py-2.5 text-white duration-300 ease-in-out hover:bg-blackho dark:bg-btndark dark:hover:bg-blackho"
->
-  {isSubmitting ? "Please wait ..." : "Submit"}
-</button>
+    <div className="flex flex-col gap-4 sm:gap-6">
+  {/* Email Input */}
+  <input
+    value={formData.email}
+    name="email"
+    onChange={handleInputChange}
+    type="email"
+    placeholder="Enter your email"
+    className="w-full rounded-full border border-stroke px-6 py-2.5 shadow-solid-2 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-black dark:shadow-none dark:focus:border-primary"
+  />
 
-  </div>
+  {/* Vlink Input */}
+  <input
+    value={formData.vlink}
+    name="vlink"
+    onChange={handleInputChange}
+    type="text"
+    placeholder="Video link"
+    className="w-full rounded-full border border-stroke px-6 py-2.5 shadow-solid-2 focus:border-primary focus:outline-none dark:border-strokedark dark:bg-black dark:shadow-none dark:focus:border-primary"
+  />
+
+  {/* Submit Button */}
+  <button
+    aria-label="get started button"
+    className="w-full flex items-center justify-center rounded-full bg-black px-7.5 py-2.5 text-white duration-300 ease-in-out hover:bg-blackho dark:bg-btndark dark:hover:bg-blackho"
+  >
+    {isSubmitting ? "Please wait ..." : "Submit"}
+  </button>
+</div>
+
+
 </form>
 
 

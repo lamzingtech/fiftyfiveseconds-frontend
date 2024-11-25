@@ -83,17 +83,17 @@ const Footer = () => {
               >
                 <a href="/" className="relative">
                   <Image
-                    src="/images/logo.png"
+                    src="/images/logo/1.png"
                     alt="logo"
-                    width={169.03}
-                    height={50}
+                    width={119.03}
+                    height={20}
                     className="w-full dark:hidden"
                   />
                   <Image
-                    src="/images/white.png"
+                    src="/images/logo/1.png"
                     alt="logo"
-                    width={169.03}
-                    height={50}
+                    width={119.03}
+                    height={20}
                     className="hidden w-full dark:block"
                   />
 
@@ -122,7 +122,7 @@ const Footer = () => {
                   href="#"
                   className="text-itemtitle font-medium text-black dark:text-white"
                 >
-                  contact@awpara.com
+                  contact@fiftyfiveseconds.com 
                 </a>
               </motion.div>
 
