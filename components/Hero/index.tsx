@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
+import DemoSection from "./DemoSection";
 
 const Hero = () => {
 
@@ -75,7 +76,7 @@ const Hero = () => {
                 
               </h1>
               <p>
-              Upload a 10-20 minute video and let us create impactful reels. In a few hrs, your completed reels will be ready to download or sent directly to your email.
+              Share us a video link (10-20 minutes length) and let us create impactful reels. In a few hrs, your completed reels will be ready to download or sent directly to your email.
               </p>
 
               <div className="mt-10">
@@ -177,6 +178,7 @@ const Hero = () => {
             </div>
           </div>
         </div>
+        <DemoSection/>
       </section>
     </>
   );

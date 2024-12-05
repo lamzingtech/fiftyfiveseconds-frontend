@@ -3,53 +3,53 @@ import { FAQ } from "@/types/faq";
 const faqData: FAQ[] = [
   {
     id: 1,
-    quest: "What is the purpose of this video summarization app?",
-    ans: "The app helps users quickly understand the content of YouTube videos by generating concise summaries creating a 30-120 secs short video. This is especially useful for lengthy videos, allowing users to get the main ideas without watching the full video(or helping in creating reels).",
+    quest: "1. What does your service do?",
+    ans: "We transform long-form videos into short, engaging reels that highlight the most important moments. Our goal is to provide professional, ready-to-share videos that save you time and effort.",
   },
   {
     id: 2,
-    quest: "How does the app work?",
-    ans: "The app processes the audio and visuals of the video to identify key moments, topics, and themes. It then uses AI to create a summarized video that captures the main points discussed in the video.",
+    quest: "2. What type of videos can I submit?",
+    ans: "You can submit videos in most standard formats, such as MP4, AVI, or MOV or Your Youtube video link. Ensure the video has clear visuals and audio for the best results.",
   },
   {
     id: 3,
-    quest: "Can the app summarize any YouTube video?",
-    ans: "Yes, the app can summarize most publicly available YouTube videos. However, it may have limitations with videos that are very short, have excessive background noise, or use non-standard languages.",
+    quest: "3. How long does it take to process a video?",
+    ans: "The processing time depends on the video length and current workload. Typically, it takes 2hrs to 24 hrs. We’ll keep you updated if any delays occur.",
   },
   {
     id: 4,
-    quest: "How long does it take to generate a summary?",
-    ans: "The processing time depends on the length of the video. For short videos (45-60 minutes), summaries typically generate in under a minute. Longer videos may take a few minutes to process.",
+    quest: "4. How will I know if my video is ready?",
+    ans: "Once your video is completed, we’ll send you an email with a link to preview the final reel. You can review it and share feedback if needed.",
   },
   {
     id: 5,
-    quest: "What types of summaries can I expect?",
-    ans: "You can expect two types of summaries: <br/><ul><li>Brief Summary: A concise overview of the key points (ideal for quick reading).</li><li>Detailed Summary: An in-depth breakdown covering the main sections or topics discussed.</li></ul>",
+    quest: "5. Can I request changes to the final video?",
+    ans: "Yes! If you’d like adjustments to the video, you can reply to the email with your feedback, and we’ll make the necessary changes.",
   },
   {
     id: 6,
-    quest: "Is the summarization 100% accurate?",
-    ans: "While the app is designed for high accuracy, summarization might miss some details or occasionally capture non-essential points. It’s always recommended to watch the original video if you need complete details.",
+    quest: "6. Do you handle confidential or sensitive content?",
+    ans: "Yes, we take confidentiality seriously. Your videos are handled securely and are not shared or accessed by anyone outside our team.",
   },
   {
     id: 7,
-    quest: "Can I customize the level of detail in the summary?",
-    ans: "Yes, the app provides options to customize the length and detail of the summary, allowing users to select summaries that are either brief or more comprehensive.",
+    quest: "7. Can I process multiple videos at once?",
+    ans: "Absolutely! If you have multiple videos, you can submit them all, and we’ll process them based on our timeline. For bulk projects, feel free to contact us for a customized plan.",
   },
   {
     id: 8,
-    quest: "Does the app support multiple languages?",
-    ans: "Yes, the app supports several languages for summarization, provided the video's language is clear and well-recognized by the AI model. Check the supported languages in the app settings.",
+    quest: "8. What happens if my video link doesn’t work?",
+    ans: "If the video link is invalid or inaccessible, we’ll notify you via email and request a valid link to proceed.",
   },
   {
     id: 9,
-    quest: "Can I download the summaries?",
-    ans: "Yes, summary video will be sent via user’s provided email.",
+    quest: "9. Do you offer pricing plans for regular or bulk orders?",
+    ans: "Yes! We have flexible pricing plans for individual and bulk orders. You can check out our Pricing Page or contact us for a custom plan.",
   },
   {
     id: 10,
-    quest: "Is the app free to use?",
-    ans: "The app may offer a free version with limited features or a trial period. For full access, some features may require a subscription.",
+    quest: "10. How do I get started?",
+    ans: "Getting started is simple! Just provide your email and video link on our platform, and we’ll take care of the rest. You’ll receive updates at every stage until your final video is ready.",
   },
 ];
 

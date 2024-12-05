@@ -85,16 +85,16 @@ const Footer = () => {
                   <Image
                     src="/images/logo/1.png"
                     alt="logo"
-                    width={119.03}
-                    height={20}
-                    className="w-full dark:hidden"
+                    width={179.03}
+                    height={25}
+                    className="dark:hidden"
                   />
                   <Image
                     src="/images/logo/1.png"
                     alt="logo"
-                    width={119.03}
-                    height={20}
-                    className="hidden w-full dark:block"
+                    width={179.03}
+                    height={25}
+                    className="hidden dark:block"
                   />
 
                   {/* <Image
@@ -161,7 +161,7 @@ const Footer = () => {
 
                     <li>
                       <a
-                        href="#"
+                        href="/pricing"
                         className="mb-3 inline-block hover:text-primary"
                       >
                         Pricing
@@ -170,7 +170,7 @@ const Footer = () => {
 
                     <li>
                       <a
-                        href="#"
+                        href="/faq"
                         className="mb-3 inline-block hover:text-primary"
                       >
                         FAQS
@@ -204,21 +204,21 @@ const Footer = () => {
                   <ul>
                     <li>
                       <a
-                        href="#"
+                        href="/about"
                         className="mb-3 inline-block hover:text-primary"
                       >
                         About us
                       </a>
                     </li>
 
-                    <li>
+                    {/* <li>
                       <a
                         href="#"
                         className="mb-3 inline-block hover:text-primary"
                       >
                         Contact Us
                       </a>
-                    </li>
+                    </li> */}
                     <li>
                       <a
                         href="#"
@@ -358,12 +358,12 @@ const Footer = () => {
                   </a>
                 </li> */}
                 <li>
-                  <a href="#" className="hover:text-primary">
+                  <a href="/privacypolicy" className="hover:text-primary">
                     Privacy Policy
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-primary">
+                  <a href="/terms" className="hover:text-primary">
                     Terms and Conditions
                   </a>
                 </li>
