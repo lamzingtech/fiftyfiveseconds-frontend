@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-import DemoSection from "./DemoSection";
 
 const Hero = () => {
 
@@ -178,7 +177,7 @@ const Hero = () => {
             </div>
           </div>
         </div>
-        <DemoSection/>
+      
       </section>
     </>
   );
