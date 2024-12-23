@@ -139,7 +139,7 @@ const DemoSection: React.FC = () => {
       <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-200 text-center mb-8">
       Video Gallery
         </h2>
-      <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4 mt-20">
+      <div className="sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4 mt-20">
         {dummyVideos.map((video, index) => (
           <div key={index} className="break-inside-avoid">
             <iframe
@@ -147,6 +147,7 @@ const DemoSection: React.FC = () => {
               title={`YouTube Video ${index + 1}`}
               width={video.width}
               height={video.height}
+              style={{ aspectRatio: '16/9' }}
               className="rounded-lg w-full"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
