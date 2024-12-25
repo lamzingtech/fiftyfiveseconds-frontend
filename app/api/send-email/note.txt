@@ -1,0 +1,16 @@
+    a_n_c            |
+| adulteducatiodb    |
+| artnculture        |
+| ccmanipur          |
+| climate            |
+| dlpidb             |
+| fisherydb          |
+| information_schema |
+| mysql              |
+| performance_schema |
+| socialdb           |
+| sys                |
+| taxes              |
+| techedudb          |
+| townplanningdb     |
+| waterresource 

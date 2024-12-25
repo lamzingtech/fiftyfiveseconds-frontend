@@ -37,10 +37,10 @@ const Hero = () => {
       setResponseMessage({ status: 2, message: "Invalid email format." });
       return;
     }
-    if (!isValidYouTubeURL(formData.vlink)) {
-      setResponseMessage({ status: 2, message: "Invalid YouTube video link." });
-      return;
-    }
+    // if (!isValidYouTubeURL(formData.vlink)) {
+    //   setResponseMessage({ status: 2, message: "Invalid YouTube video link." });
+    //   return;
+    // }
 
     setIsSubmitting(true);
     setResponseMessage({ status: 3, message: "" });
@@ -48,7 +48,7 @@ const Hero = () => {
     try {
       const res = await fetch('/api/send-email', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 

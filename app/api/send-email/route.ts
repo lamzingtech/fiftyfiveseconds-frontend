@@ -17,7 +17,8 @@ import path from 'path';
 //   region: process.env.AWS_REGION,
 // });
 
-const COBALT_API_URL = "https://c.blahaj.ca/";
+//const COBALT_API_URL = "https://c.blahaj.ca/";
+const COBALT_API_URL = "http://13.201.86.186:9000/";
 
 
 
@@ -55,12 +56,12 @@ export async function POST(req: any) {
     );
   }
 
-  if (!isValidYouTubeURL(vlink)) {
-    return new Response(
-      JSON.stringify({ status: 2, message: 'Invalid YouTube video link' }),
-      { status: 400 }
-    );
-  }
+  // if (!isValidYouTubeURL(vlink)) {
+  //   return new Response(
+  //     JSON.stringify({ status: 2, message: 'Invalid YouTube video link' }),
+  //     { status: 400 }
+  //   );
+  // }
 
   try {
     console.log("1111");
@@ -85,13 +86,15 @@ export async function POST(req: any) {
     // Step 1: Send video URL to Cobalt API
     const cobaltResponse = await axios.post(COBALT_API_URL, {
       url: vlink,
-      downloadMode: 'audio',
+      x: 'audio',
     }, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
     });
+
+    console.log("checking --- 111 "+JSON.stringify(cobaltResponse))
 
     if (!cobaltResponse.data || !cobaltResponse.data.url) {
       return new Response(
@@ -132,7 +135,7 @@ export async function POST(req: any) {
       { status: 200 }
     );
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error:----', error);
     return new Response(
       JSON.stringify({ status: 2, message: 'An error occurred during the process' }),
       { status: 500 }
