@@ -34,3 +34,5 @@ yarn-error.log*
 
 # vercel
 .vercel
+*__pycache__
+cron_scheduler/function_tester.ipynb

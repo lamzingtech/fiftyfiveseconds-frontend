@@ -55,14 +55,17 @@ with get_db_connection() as conn:
             WHERE task_status = FALSE AND skip = FALSE
             """)
         except Exception as e:
-            print(f"Error fetching tasks: {e}")
+            print(f"CRON - Error fetching tasks: {e}")
 
         if tasks:
-            instance_details = fetch_one(cursor, "SELECT * FROM instance_details WHERE key = 'instance_1'")
+            try :
+                instance_details = fetch_one(cursor, "SELECT * FROM instance_details WHERE key = 'instance_1'")
+            except Exception as e:
+                print(f"CRON - Error fetching instance_details: {e}")
 
             # Ensure instance_details is not None before accessing keys
-            try:
-                if instance_details and not instance_details['instance_status']:
+            if instance_details and not instance_details['instance_status']:
+                try :
                     response = start_instance()
                     update_instance_details(conn, (
                         True,
@@ -72,10 +75,9 @@ with get_db_connection() as conn:
                         False,
                         0
                     ))
-                else:
-                    print("instance_details table not found")
-            except Exception as e:
-                print(f"Error starting instance: {e}")
+                    print("CRON - Instance started successfully")
+                except Exception as e:
+                    print(f"CRON - Error starting instance: {e}")
 
             # Add a safeguard for infinite loops
             max_iterations = os.getenv("MAX_ITERATIONS")
@@ -83,7 +85,7 @@ with get_db_connection() as conn:
 
             while tasks:
                 if iteration_count >= max_iterations:
-                    print("Maximum iterations reached. Exiting loop to prevent infinite processing.")
+                    print("CRON - Maximum iterations reached. Exiting loop to prevent infinite processing.")
                     break
 
                 execute_query(cursor, "UPDATE instance_details SET in_use = TRUE WHERE key = 'instance_1'")
@@ -93,7 +95,7 @@ with get_db_connection() as conn:
                     uuid, task_id, email, in_s3_uri, out_s3_uri, task_status, skip, times_run = task
                     
                     try:
-                        print(f"[ {uuid} ] - Processing task...")
+                        print(f"CRON - [ {uuid} ] - Processing task...")
                         # Use a configurable parameter for times_run threshold
                         max_times_run = int(os.getenv("MAX_TIMES_RUN", 5))
 
@@ -106,11 +108,11 @@ with get_db_connection() as conn:
                         try:    
                             instance_ip = fetch_one(cursor, "SELECT instance_ip FROM instance_details WHERE key = 'instance_1'")[0]
                         except Exception as e:
-                            print(f"[ {uuid} ] - Error fetching instance_ip: {e}")
+                            print(f"CRON - [ {uuid} ] - Error fetching instance_ip: {e}")
                             continue
                         
                         try:
-                            print(f"[ {uuid} ] - Sending request to http://{instance_ip}:{os.getenv('OV_PORT')}/clone_voice/")
+                            print(f"CRON - [ {uuid} ] - Sending request to http://{instance_ip}:{os.getenv('OV_PORT')}/clone_voice/")
                             response = requests.post(
                                 f"http://{instance_ip}:{os.getenv("OV_PORT")}/clone_voice/",
                                 headers={
@@ -118,7 +120,7 @@ with get_db_connection() as conn:
                                     'Content-Type': 'application/x-www-form-urlencoded'
                                 },
                                 data={
-                                    's3_uri': in_s3_uri,
+                                    'video_url': in_s3_uri,
                                     'prompt': 'Generate a summary of the audio in less than 200 words',
                                     'text_string': '',
                                     'accent': os.getenv("VOICE_ACCENT"),
@@ -126,21 +128,22 @@ with get_db_connection() as conn:
                                     'filename': 'Generated_Voice'
                                 }
                             )
-                            print(f"[ {uuid} ] - Response status code: {response.status_code}")
+                            print(f"CRON - [ {uuid} ] - Response status code: {response.status_code}")
                         except Exception as e:
-                            print(f"[ {uuid} ] - Error making request: {e}")
+                            print(f"CRON - [ {uuid} ] - Error making request: {e}")
                             continue
 
                         if response.status_code == 200:
-                            print(f"[ {uuid} ] - Task completed.")
+                            print(f"CRON - [ {uuid} ] - Task completed.")
                             s3_generated_voice = response.json().get('s3_generated_voice')
+                            summary = response.json().get('summary')
                             execute_query(cursor, """
                             UPDATE task_list
-                            SET task_status = TRUE, out_s3_uri = %s
+                            SET task_status = TRUE, out_s3_uri = %s, summary = %s
                             WHERE uuid = %s
-                            """, (s3_generated_voice, uuid))
+                            """, (s3_generated_voice, summary, uuid))
                         elif response.status_code == 500:
-                            print(f"[ {uuid} ] - Task failed. Times run: {times_run + 1}")
+                            print(f"CRON - [ {uuid} ] - Task failed. Times run: {times_run + 1}")
                             execute_query(cursor, """
                             UPDATE task_list
                             SET times_run = times_run + 1
@@ -151,9 +154,9 @@ with get_db_connection() as conn:
                             INSERT INTO debug_logs (uuid, run_count, debug_log)
                             VALUES (%s, %s, %s)
                             """, (uuid, times_run + 1, response.text))
-                            print(f"[ {uuid} ] - Debug log saved.\n Log: \n{response.text}")
+                            print(f"CRON - [ {uuid} ] - Debug log saved.\n Log: \n{response.text}")
                     except  Exception as e:
-                        print(f"[ {uuid} ] - Error processing task:\n{e}")
+                        print(f"CRON - [ {uuid} ] - Error processing task:\n{e}")
 
                     conn.commit()
                 
@@ -173,7 +176,7 @@ with get_db_connection() as conn:
             try:
                 instance_details = fetch_one(cursor, "SELECT instance_status, in_use, cron_count, request_id, instance_id FROM instance_details WHERE key = 'instance_1'")
             except Exception as e:
-                print(f"Error fetching instance_details: {e}")
+                print(f"CRON - Error fetching instance_details: {e}")
                 instance_details = None
 
             # Ensure instance_details is valid before processing
@@ -183,18 +186,18 @@ with get_db_connection() as conn:
                     if instance_status and not in_use:
                         if cron_count <= 3:
                             execute_query(cursor, "UPDATE instance_details SET cron_count = cron_count + 1 WHERE key = 'instance_1'")
-                            print("Waiting for next cron job...")
+                            print("CRON - Waiting for next cron job...")
                         else:
                             stop_instance(request_id, instance_id)
                             execute_query(cursor, "UPDATE instance_details SET instance_status = FALSE, cron_count = 0 WHERE key = 'instance_1'")
-                            print("Stopping instance...")
+                            print("CRON - Stopping instance...")
 
                     elif instance_status and in_use:
-                        print("Instance in use...")
+                        print("CRON - Instance in use...")
 
                     elif not instance_status:
-                        print("Waiting for next cron job...")
+                        print("CRON - Waiting for next cron job...")
                 except Exception as e:
-                    print(f"Error updating instance_details: {e}")
+                    print(f"CRON - Error updating instance_details: {e}")
 
             conn.commit()

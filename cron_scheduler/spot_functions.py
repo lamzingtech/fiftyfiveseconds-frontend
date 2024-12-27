@@ -69,11 +69,11 @@ def start_instance():
                     print(f"Instance is running with Public IP: {instance_ip}")
                     return {
                         "statusCode": 200,
+                        "request_id": request_id,
+                        "instance_id": instance_id,
+                        "instance_ip": instance_ip,
                         "body": json.dumps({
                             "message": "Spot Instance launched and initialized successfully",
-                            "request_id": request_id,
-                            "instance_id": instance_id,
-                            "instance_ip": instance_ip
                         })
                     }
 
