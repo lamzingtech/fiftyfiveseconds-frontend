@@ -36,3 +36,5 @@ yarn-error.log*
 .vercel
 *__pycache__
 cron_scheduler/function_tester.ipynb
+cron_scheduler/scheduler_v1.1.py
+cron_scheduler/scheduler_v1.2.py
