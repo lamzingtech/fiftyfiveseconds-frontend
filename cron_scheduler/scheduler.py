@@ -135,13 +135,13 @@ with get_db_connection() as conn:
 
                         if response.status_code == 200:
                             print(f"CRON - [ {uuid} ] - Task completed.")
-                            s3_generated_voice = response.json().get('s3_generated_voice')
+                            out_s3_uri = response.json().get('s3_generated_voice')
                             summary = response.json().get('summary')
                             execute_query(cursor, """
                             UPDATE task_list
                             SET task_status = TRUE, out_s3_uri = %s, summary = %s
                             WHERE uuid = %s
-                            """, (s3_generated_voice, summary, uuid))
+                            """, (out_s3_uri, summary, uuid))
                         elif response.status_code == 500:
                             print(f"CRON - [ {uuid} ] - Task failed. Times run: {times_run + 1}")
                             execute_query(cursor, """
