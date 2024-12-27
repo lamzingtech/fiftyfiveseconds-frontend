@@ -3,6 +3,7 @@ import psycopg2
 import requests
 import json
 from dotenv import load_dotenv
+from spot_functions import start_instance, stop_instance
 
 # Load environment variables
 load_dotenv()
@@ -12,13 +13,6 @@ DB_PASS = os.getenv("DB_PASS")
 DB_HOST = os.getenv("DB_HOST")
 DB_PORT = os.getenv("DB_PORT")
 
-def start_instance():
-    # Placeholder for actual implementation of starting an instance
-    pass
-
-def stop_instance(spot_request_id, instance_id):
-    # Placeholder for actual implementation of stopping an instance
-    pass
 
 # Database connection setup
 def get_db_connection():
@@ -48,7 +42,7 @@ def update_instance_details(conn, details):
         SET
             instance_status = %s,
             instance_ip = %s,
-            spot_request_id = %s,
+            request_id = %s,
             instance_id = %s,
             in_use = %s,
             cron_count = %s
@@ -76,7 +70,7 @@ with get_db_connection() as conn:
                     update_instance_details(conn, (
                         True,
                         response['instance_ip'],
-                        response['spot_request_id'],
+                        response['request_id'],
                         response['instance_id'],
                         False,
                         0
@@ -160,18 +154,18 @@ with get_db_connection() as conn:
             conn.commit()
 
         else:
-            instance_details = fetch_one(cursor, "SELECT instance_status, in_use, cron_count, spot_request_id, instance_id FROM instance_details WHERE key = 'instance_1'")
+            instance_details = fetch_one(cursor, "SELECT instance_status, in_use, cron_count, request_id, instance_id FROM instance_details WHERE key = 'instance_1'")
 
             # Ensure instance_details is valid before processing
             if instance_details:
-                instance_status, in_use, cron_count, spot_request_id, instance_id = instance_details
+                instance_status, in_use, cron_count, request_id, instance_id = instance_details
 
                 if instance_status and not in_use:
                     if cron_count <= 3:
                         execute_query(cursor, "UPDATE instance_details SET cron_count = cron_count + 1 WHERE key = 'instance_1'")
                         print("Waiting for next cron job...")
                     else:
-                        stop_instance(spot_request_id, instance_id)
+                        stop_instance(request_id, instance_id)
                         execute_query(cursor, "UPDATE instance_details SET instance_status = FALSE, cron_count = 0 WHERE key = 'instance_1'")
 
                 elif instance_status and in_use:

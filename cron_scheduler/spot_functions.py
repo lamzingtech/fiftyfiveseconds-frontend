@@ -96,7 +96,6 @@ def start_instance():
             })
         }
 
-
 def stop_instance(request_id, instance_id):
     try:
         # request_id = "sir-vt3yzywm" # Debugging
