@@ -30,13 +30,13 @@ def start_instance():
         )
 
         # Extract Spot Instance Request ID
-        spot_request_id = response['SpotInstanceRequests'][0]['SpotInstanceRequestId']
-        print(f"Spot Instance Request ID: {spot_request_id}")
+        request_id = response['SpotInstanceRequests'][0]['SpotInstanceRequestId']
+        print(f"Spot Instance Request ID: {request_id}")
 
         # Poll the Spot Request status until it's fulfilled
         instance_id = None
         for _ in range(10):  # Retry up to 30 times with 5-second intervals
-            spot_status = ec2.describe_spot_instance_requests(SpotInstanceRequestIds=[spot_request_id])
+            spot_status = ec2.describe_spot_instance_requests(SpotInstanceRequestIds=[request_id])
             state = spot_status['SpotInstanceRequests'][0]['State']
 
             if state == "active":  # Spot request fulfilled
@@ -71,7 +71,7 @@ def start_instance():
                         "statusCode": 200,
                         "body": json.dumps({
                             "message": "Spot Instance launched and initialized successfully",
-                            "spot_request_id": spot_request_id,
+                            "request_id": request_id,
                             "instance_id": instance_id,
                             "instance_ip": instance_ip
                         })
@@ -97,15 +97,15 @@ def start_instance():
         }
 
 
-def stop_instance():
+def stop_instance(request_id, instance_id):
     try:
-        spot_request_id = "sir-vt3yzywm"
-        instance_id = "i-0053976fb2e2f0608"
-        print(f"Retrieved Spot Request ID: {spot_request_id} and Instance ID: {instance_id}")
+        # request_id = "sir-vt3yzywm" # Debugging
+        # instance_id = "i-0053976fb2e2f0608" # Debugging
+        print(f"Retrieved Spot Request ID: {request_id} and Instance ID: {instance_id}")
 
         # Cancel the Spot Request
-        cancel_response = ec2.cancel_spot_instance_requests(SpotInstanceRequestIds=[spot_request_id])
-        print(f"Spot Request {spot_request_id} cancelled successfully.")
+        cancel_response = ec2.cancel_spot_instance_requests(SpotInstanceRequestIds=[request_id])
+        print(f"Spot Request {request_id} cancelled successfully.")
 
         # Terminate the EC2 instance
         terminate_response = ec2.terminate_instances(InstanceIds=[instance_id])
@@ -114,7 +114,7 @@ def stop_instance():
         return {
             "statusCode": 200,
             "body": json.dumps({
-                "message": f"EC2 instance {instance_id} is being terminated, and Spot Request {spot_request_id} is cancelled.",
+                "message": f"EC2 instance {instance_id} is being terminated, and Spot Request {request_id} is cancelled.",
                 "cancel_response": cancel_response,
                 "terminate_response": terminate_response
             })

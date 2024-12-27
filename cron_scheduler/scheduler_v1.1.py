@@ -7,10 +7,6 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 ov_port = os.getenv("OV_PORT")
-DB_USER = os.getenv("DB_USER")
-DB_PASS = os.getenv("DB_PASS")
-DB_HOST = os.getenv("DB_HOST")
-DB_PORT = os.getenv("DB_PORT")
 
 def start_instance():
     # Placeholder for actual implementation of starting an instance
@@ -25,7 +21,7 @@ def get_db_connection():
     return psycopg2.connect(
         database="55-secs",
         user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASS"),
+        password=os.getenv("DB_PASSWORD"),
         host=os.getenv("DB_HOST"),
         port=os.getenv("DB_PORT")
     )
@@ -61,7 +57,7 @@ with get_db_connection() as conn:
 
         # Check if there are tasks to process
         tasks = fetch_all(cursor, """
-        SELECT uuid, task_id, email, in_s3_uri, out_s3_uri, task_status, skip, times_run
+        SELECT uuid, task_id, email, voice_accent, in_s3_uri, out_s3_uri, task_status, skip, times_run
         FROM task_list
         WHERE task_status = FALSE AND skip = FALSE
         """)
@@ -69,41 +65,25 @@ with get_db_connection() as conn:
         if tasks:
             instance_details = fetch_one(cursor, "SELECT * FROM instance_details WHERE key = 'instance_1'")
 
-            # Ensure instance_details is not None before accessing keys
-            try:
-                if instance_details and not instance_details['instance_status']:
-                    response = start_instance()
-                    update_instance_details(conn, (
-                        True,
-                        response['instance_ip'],
-                        response['spot_request_id'],
-                        response['instance_id'],
-                        False,
-                        0
-                    ))
-                else:
-                    print("instance_details table not found")
-            except Exception as e:
-                print(f"Error starting instance: {e}")
-
-            # Add a safeguard for infinite loops
-            max_iterations = os.getenv("MAX_ITERATIONS")
-            iteration_count = 0
+            if not instance_details['instance_status']:
+                response = start_instance()
+                update_instance_details(conn, (
+                    True,
+                    response['instance_ip'],
+                    response['spot_request_id'],
+                    response['instance_id'],
+                    False,
+                    0
+                ))
 
             while tasks:
-                if iteration_count >= max_iterations:
-                    print("Maximum iterations reached. Exiting loop to prevent infinite processing.")
-                    break
-
                 execute_query(cursor, "UPDATE instance_details SET in_use = TRUE WHERE key = 'instance_1'")
                 conn.commit()
 
                 for task in tasks:
-                    uuid, task_id, email, in_s3_uri, out_s3_uri, task_status, skip, times_run = task
+                    uuid, task_id, email, voice_accent, in_s3_uri, out_s3_uri, task_status, skip, times_run = task
 
-                    # Use a configurable parameter for times_run threshold
-                    max_times_run = int(os.getenv("MAX_TIMES_RUN", 5))
-                    if times_run > max_times_run:
+                    if times_run > 5:
                         execute_query(cursor, "UPDATE task_list SET skip = TRUE WHERE uuid = %s", (uuid,))
                         conn.commit()
                         continue
@@ -120,7 +100,7 @@ with get_db_connection() as conn:
                             's3_uri': in_s3_uri,
                             'prompt': 'Generate a summary of the audio in less than 200 words',
                             'text_string': '',
-                            'accent': os.getenv("VOICE_ACCENT"),
+                            'accent': voice_accent,
                             'speed': 1,
                             'filename': 'Generated_Voice'
                         }
@@ -149,35 +129,30 @@ with get_db_connection() as conn:
                 
                 # Refresh tasks
                 tasks = fetch_all(cursor, """
-                SELECT uuid, task_id, email,, in_s3_uri, out_s3_uri, task_status, skip, times_run
+                SELECT uuid, task_id, email, voice_accent, in_s3_uri, out_s3_uri, task_status, skip, times_run
                 FROM task_list
                 WHERE task_status = FALSE AND skip = FALSE
                 """)
-
-                iteration_count += 1
 
             execute_query(cursor, "UPDATE instance_details SET in_use = FALSE WHERE key = 'instance_1'")
             conn.commit()
 
         else:
             instance_details = fetch_one(cursor, "SELECT instance_status, in_use, cron_count, spot_request_id, instance_id FROM instance_details WHERE key = 'instance_1'")
+            instance_status, in_use, cron_count, spot_request_id, instance_id = instance_details
 
-            # Ensure instance_details is valid before processing
-            if instance_details:
-                instance_status, in_use, cron_count, spot_request_id, instance_id = instance_details
-
-                if instance_status and not in_use:
-                    if cron_count <= 3:
-                        execute_query(cursor, "UPDATE instance_details SET cron_count = cron_count + 1 WHERE key = 'instance_1'")
-                        print("Waiting for next cron job...")
-                    else:
-                        stop_instance(spot_request_id, instance_id)
-                        execute_query(cursor, "UPDATE instance_details SET instance_status = FALSE, cron_count = 0 WHERE key = 'instance_1'")
-
-                elif instance_status and in_use:
-                    print("Instance in use...")
-
-                elif not instance_status:
+            if instance_status and not in_use:
+                if cron_count <= 3:
+                    execute_query(cursor, "UPDATE instance_details SET cron_count = cron_count + 1 WHERE key = 'instance_1'")
                     print("Waiting for next cron job...")
+                else:
+                    stop_instance(spot_request_id, instance_id)
+                    execute_query(cursor, "UPDATE instance_details SET instance_status = FALSE, cron_count = 0 WHERE key = 'instance_1'")
+
+            elif instance_status and in_use:
+                print("Instance in use...")
+
+            elif not instance_status:
+                print("Waiting for next cron job...")
 
             conn.commit()
