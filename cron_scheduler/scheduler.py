@@ -154,7 +154,7 @@ with get_db_connection() as conn:
                             INSERT INTO debug_logs (uuid, run_count, debug_log)
                             VALUES (%s, %s, %s)
                             """, (uuid, times_run + 1, response.text))
-                            print(f"CRON - [ {uuid} ] - Debug log saved.\n Log: \n{response.text}")
+                            print(f"CRON - [ {uuid} ] - Error log saved.\n\tRun Count: {times_run + 1} \n\Error Log: \n{response.text}")
                     except  Exception as e:
                         print(f"CRON - [ {uuid} ] - Error processing task:\n{e}")
 
