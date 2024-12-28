@@ -1,0 +1,15 @@
+# AWS
+ACCESS_KEY = ""
+SECRET_KEY = ""
+
+# Database
+DB_NAME = 55-secs-db
+DB_HOST = localhost
+DB_PORT = 5432
+DB_USER = postgres
+DB_PASS = admin
+
+OV_PORT = 8000
+MAX_ITERATIONS = 50
+MAX_TIMES_RUN = 5
+VOICE_ACCENT = "ind"
