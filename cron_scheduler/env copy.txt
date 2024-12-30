@@ -1,6 +1,11 @@
 # AWS
 ACCESS_KEY = ""
 SECRET_KEY = ""
+KEY_NAME = "55-secs-key"
+INSTANCE_TYPE = "g4dn.xlarge"
+IMAGE_ID = ""
+SECURITY_GROUP_ID = "sg-0865c642da21993d0"
+START_WAIT_TIME = 60
 
 # Database
 DB_NAME = 55-secs-db
@@ -9,7 +14,13 @@ DB_PORT = 5432
 DB_USER = postgres
 DB_PASS = admin
 
+# Openvoice API
 OV_PORT = 8000
+VOICE_ACCENT = "ind"
+
+# Cron Job
 MAX_ITERATIONS = 50
 MAX_TIMES_RUN = 5
-VOICE_ACCENT = "ind"
+
+# Virtual Env
+ENV_PATH = "./env"

@@ -1,6 +1,3 @@
 #!/bin/bash
-sudo docker start 8c277d87242a
-# sudo docker exec 8c277d87242a /bin/bash -c "cd /root/55-seconds && conda run -n openvoice ./start.sh"
-sudo docker exec 8c277d87242a /bin/bash -c "cd /root/55-seconds && conda run -n openvoice uvicorn app:app --host 0.0.0.0 --port 8000"
-
-# cd /root/55-seconds && ./script.sh
+sudo docker start 0287923e5f6c
+sudo docker exec 0287923e5f6c /bin/bash -c "kill -9 \`lsof -t -i:8000\` && cd /root/55-seconds && uvicorn app:app --host 0.0.0.0 --port 8000"
