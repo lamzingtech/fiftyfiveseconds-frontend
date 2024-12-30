@@ -3,6 +3,8 @@ services:
   myservice:
     image: c5f18ec0d33b
     container_name: 8c277d87242a
+    ports:
+      - "8000:8000"  # Expose the port (adjust as needed)
     volumes:
       - /root/55-seconds:/root/55-seconds
     command: bash -c "cd /root/55-seconds && ./start.sh"
@@ -13,8 +15,7 @@ version: '3.8'
 services:
   app:
     build: .
-    ports:
-      - "3000:3000"  # Expose the port (adjust as needed)
+    
     volumes:
       - .:/app      # Bind mount the project directory
     environment:
