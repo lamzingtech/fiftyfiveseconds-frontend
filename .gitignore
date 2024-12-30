@@ -39,3 +39,6 @@ cron_scheduler/function_tester.ipynb
 cron_scheduler/scheduler_v1.1.py
 cron_scheduler/scheduler_v1.2.py
 cron_scheduler/gpt_prompt.md
+*/env*
+cron_scheduler/spot_functions_V1.0.py
+cron_scheduler/spot_functions_V1.1.py

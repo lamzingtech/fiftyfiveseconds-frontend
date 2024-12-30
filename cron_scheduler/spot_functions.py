@@ -1,10 +1,22 @@
-import boto3, time, json, os
+import boto3, time, json, os, subprocess
 from dotenv import load_dotenv
 
-# AWS credentials
+# environment variables
 load_dotenv()
 aws_access_key = os.getenv('ACCESS_KEY')
 aws_secret_key = os.getenv('SECRET_KEY')
+aws_image_id = os.getenv('IMAGE_ID')
+aws_key_name = os.getenv('KEY_NAME')
+aws_instance_type = os.getenv('INSTANCE_TYPE')
+aws_security_group_id = os.getenv('SECURITY_GROUP_ID')
+env_path = os.getenv('ENV_PATH')
+
+def activate_virtualenv(venv_path):
+    activate_script = os.path.join(venv_path, 'bin', 'activate') # linux
+    # activate_script = os.path.join(venv_path, 'Scripts', 'activate.bat') # windows
+    command = f'source {activate_script}'
+    subprocess.run(command, shell=True, executable="/bin/bash")
+activate_virtualenv(env_path)
 
 # EC2 client with explicit credentials
 ec2 = boto3.client(
@@ -22,10 +34,10 @@ def start_instance():
             InstanceCount=1,  # Number of instances to launch
             Type="one-time",
             LaunchSpecification={
-                'ImageId': 'ami-03062e78aab5d2204',
-                'InstanceType': 'g4dn.xlarge',
-                'KeyName': 'manually-created-instance',
-                'SecurityGroupIds': ['sg-0865c642da21993d0'],
+                'ImageId':          aws_image_id,
+                'InstanceType':     aws_instance_type,
+                'KeyName':          aws_key_name,
+                'SecurityGroupIds': [aws_security_group_id],
             }
         )
 
@@ -51,6 +63,15 @@ def start_instance():
 
         if not instance_id:
             raise TimeoutError("Spot Instance Request not fulfilled within the expected time.")
+        
+        # Add a name to the instance
+        print(f"Assigning name '55-secs-instance' to instance {instance_id}...")
+        ec2.create_tags(
+            Resources=[instance_id],
+            Tags=[{"Key": "Name", "Value": "55-secs-instance"}]
+        )
+        print("Instance named successfully.")
+
 
         # Check instance initialization state and retrieve public IP
         for _ in range(5):  # Retry up to 5 times with 5-second intervals

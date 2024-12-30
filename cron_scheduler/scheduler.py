@@ -1,4 +1,4 @@
-import os
+import os, time
 import psycopg2
 import requests
 import json
@@ -7,6 +7,7 @@ from spot_functions import start_instance, stop_instance
 
 # Load environment variables
 load_dotenv()
+wait_time = os.getenv("START_WAIT_TIME")
 # ov_port = os.getenv("OV_PORT")
 
 # Database connection setup
@@ -75,6 +76,8 @@ with get_db_connection() as conn:
                         False,
                         0
                     ))
+                    print(f"CRON - Waiting {wait_time} seconds for instance to start")
+                    time.sleep(wait_time)
                     print("CRON - Instance started successfully")
                 except Exception as e:
                     print(f"CRON - Error starting instance: {e}")
@@ -135,7 +138,7 @@ with get_db_connection() as conn:
 
                         if response.status_code == 200:
                             print(f"CRON - [ {uuid} ] - Task completed.")
-                            out_s3_uri = response.json().get('s3_generated_voice')
+                            out_s3_uri = response.json().get('result_zip')
                             summary = response.json().get('summary')
                             execute_query(cursor, """
                             UPDATE task_list
