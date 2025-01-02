@@ -7,7 +7,7 @@ const Hero = () => {
     email: '',
     videoFile: null, // Updated for video file upload
   });
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [progress, setProgress] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [responseMessage, setResponseMessage] = useState({ status: 3, message: "" });
